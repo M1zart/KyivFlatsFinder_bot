@@ -87,7 +87,10 @@ async def flats_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     result = "\n".join(text_parts)
     result = clean_markdown(result)
 
-    await update.message.reply_text(result)
+    # Telegram ограничивает сообщения 4096 символами — разбиваем при необходимости
+    max_len = 4000
+    for i in range(0, len(result), max_len):
+        await update.message.reply_text(result[i:i + max_len])
 
 
 def main():
